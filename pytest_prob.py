@@ -111,7 +111,8 @@ class BItem(pytest.Item):
             raise pytest.skip(self.name)
 
     def runtest(self):
-        pattern = ['false/0,false_after_expansion/0,unknown/0,unknown_after_expansion/0', 'Predicate.*is TRUE', 'Predicate is FALSE', pexpect.TIMEOUT, pexpect.EOF]
+        # 
+        pattern = ['false/0,false_after_expansion/0,unknown/0,unknown_after_expansion/0', 'Predicate.*is TRUE', 'Expression Value =.*\nTRUE', 'Predicate is FALSE', 'Expression Value =\nFALSE', pexpect.TIMEOUT, pexpect.EOF]
         self._skip(self.extra.get('skip', False))
         #
         cli = self.parent.process
@@ -124,7 +125,8 @@ class BItem(pytest.Item):
         timeout = self.extra.get('timeout', 5)
         result = cli.expect(pattern, timeout=timeout)
         #
-        if result > 1:
+        if result > 2: # index in the pattern list above.
+                       # result < 2 indicates successful execution
             raise BTestException(self, log.getvalue())
 
     def __repr__(self):
