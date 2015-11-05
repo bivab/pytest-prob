@@ -67,8 +67,9 @@ class BTestFile(pytest.File):
 
     def setup(self):
         if 'machine' not in self.raw:
-            pytest.fail("machine not provided in test")
-        self.machine = self.raw['machine']
+            # XXX print a warning
+            print("machine not provided in test")
+        self.machine = self.raw.get('machine', '')
         self.flags = self.raw.get('flags', '')
 
         if 'setup' not in self.raw:
