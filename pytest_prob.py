@@ -72,18 +72,17 @@ class BTestFile(pytest.File):
         self.machine = self.raw.get('machine', '')
         self.flags = self.raw.get('flags', '')
 
-        if 'setup' not in self.raw:
-            return
-        setup = self.raw['setup']
-        env = os.environ.copy()
-        if isinstance(setup, dict):
-            cmd=setup['cmd'].split()
-            if 'env' in setup:
-                for k,v in (i.split('=') for i in setup['env'].split()):
-                    env[k] = v
-        else:
-            cmd=self.raw['setup'].split()
-        call(cmd, env=env)
+        if 'setup'  in self.raw:
+            setup = self.raw['setup']
+            env = os.environ.copy()
+            if isinstance(setup, dict):
+                cmd=setup['cmd'].split()
+                if 'env' in setup:
+                    for k,v in (i.split('=') for i in setup['env'].split()):
+                        env[k] = v
+            else:
+                cmd=self.raw['setup'].split()
+            call(cmd, env=env)
 
         self.process = pexpect.spawn('probcli -repl ' + self.flags + ' ' + self.machine)
         self.process.expect('>>>')
