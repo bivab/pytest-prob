@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 
+TEST_MACHINE = os.path.join(os.path.dirname(__file__), 'TestMachine.mch')
 
 def prob_plugin_test(f):
     def test_func(testdir):
@@ -63,4 +64,63 @@ def test_truth(testdir):
 
     result.stdout.fnmatch_lines([
         '*::test_truth PASSED',
+    ])
+
+
+@prob_plugin_test
+def test_setup(testdir):
+    path = testdir.tmpdir.join('setup.txt')
+    testdir.makefile('.yml', test_setup="""
+        setup: "touch {}"
+        test_foo:
+            test: "TRUE"
+    """.format(path))
+    result = testdir.runpytest()
+    assert path.exists()
+
+
+@prob_plugin_test
+def test_teardown(testdir):
+    path = testdir.tmpdir.join('TestMachine.mch')
+    testdir.makefile('.yml', test_teardown="""
+        setup: "cp  {source} {target}"
+        teardown: "rm {target}"
+        machine: {target}
+        test_subset:
+            test: "{{aa, bb}} <: TEST_SET"
+    """.format(source=TEST_MACHINE, target=path))
+    result = testdir.runpytest('-v')
+
+    result.stdout.fnmatch_lines([
+        '*::test_subset PASSED',
+    ])
+    assert not path.exists()
+
+
+@prob_plugin_test
+def test_machine(testdir):
+    testdir.makefile('.yml', test_machine="""
+        machine: {}
+        test_member:
+            test: "aa : TEST_SET"
+            """.format(TEST_MACHINE))
+    result = testdir.runpytest('-v')
+
+    result.stdout.fnmatch_lines([
+        '*::test_member PASSED',
+    ])
+
+
+@prob_plugin_test
+def test_flags(testdir):
+    testdir.makefile('.yml', test_machine="""
+        machine: {}
+        flags: -init
+        test_constant:
+            test: "cc = 23"
+            """.format(TEST_MACHINE))
+    result = testdir.runpytest('-v')
+
+    result.stdout.fnmatch_lines([
+        '*::test_constant PASSED',
     ])
