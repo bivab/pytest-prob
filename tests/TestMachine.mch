@@ -1,0 +1,8 @@
+MACHINE TestMachine
+SETS
+  TEST_SET = {aa, bb}
+CONSTANTS
+  cc
+PROPERTIES
+  cc = 23
+END
