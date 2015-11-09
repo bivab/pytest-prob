@@ -2,3 +2,5 @@ __pycache__/*
 *.pyc
 .tox
 *.egg-info
+*.prob
+.cache
