@@ -1,8 +1,16 @@
 # -*- coding: utf-8 -*-
 import os
 
+
+def prob_plugin_test(f):
+    def test_func(testdir):
+        testdir.makeconftest('pytest_plugins = "prob"')
+        f(testdir)
+    return test_func
+
+
+@prob_plugin_test
 def test_simple_predicate(testdir):
-    testdir.makeconftest('pytest_plugins = "prob"')
     testdir.makefile('.yml', test_truth="""
         test_predicate:
             test: "1=1"
@@ -14,8 +22,8 @@ def test_simple_predicate(testdir):
     ])
 
 
+@prob_plugin_test
 def test_simple_false_predicate(testdir):
-    testdir.makeconftest('pytest_plugins = "prob"')
     testdir.makefile('.yml', test_truth="""
         test_predicate:
             test: "1 /= 1"
@@ -27,11 +35,11 @@ def test_simple_false_predicate(testdir):
     ])
 
 
+@prob_plugin_test
 def test_missing_prob(testdir):
     path = os.environ['PATH']
     os.environ['PATH'] = ''
     try:
-        testdir.makeconftest('pytest_plugins = "prob"')
         testdir.makefile('.yml', test_truth="""
             test_predicate:
                 test: "1=1"
@@ -44,8 +52,9 @@ def test_missing_prob(testdir):
     finally:
         os.environ['PATH'] = path
 
+
+@prob_plugin_test
 def test_truth(testdir):
-    testdir.makeconftest('pytest_plugins = "prob"')
     testdir.makefile('.yml', test_truth="""
         test_truth:
             test: "TRUE"
