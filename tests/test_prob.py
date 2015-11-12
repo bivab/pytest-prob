@@ -124,3 +124,21 @@ def test_flags(testdir):
     result.stdout.fnmatch_lines([
         '*::test_constant PASSED',
     ])
+
+@prob_plugin_test
+def test_skip(testdir):
+    testdir.makefile('.yml', test_machine="""
+        test_skip:
+            skip: lorem ipsum
+            test: FALSE
+            """)
+    result = testdir.runpytest('-v')
+    result2 = testdir.runpytest('-rs')
+
+    result.stdout.fnmatch_lines([
+        '*::test_skip SKIPPED',
+    ])
+
+    result2.stdout.fnmatch_lines([
+        '*test_skip: lorem ipsum',
+    ])
