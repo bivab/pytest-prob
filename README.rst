@@ -5,11 +5,9 @@ pytest-prob
     :target: https://travis-ci.org/bivab/pytest-prob
     :alt: See Build Status on Travis CI
 
-Pytest plugin to run B predicates as tests on ProB
+Pytest plugin to run B predicates and expressions as tests on `ProB`_.
 
 ----
-
-This `Pytest`_ plugin was generated with `Cookiecutter`_ along with `@hackebrot`_'s `Cookiecutter-pytest-plugin`_ template.
 
 
 Features
@@ -18,34 +16,36 @@ Features
 * TODO
 
 
+Testing
+-------
+
+Tests can be run with `tox`_.
+
 Requirements
 ------------
 
-* TODO
-
+See `requirements.txt`_ for runtime dependencies and `requirements/dev.txt`_ for development dependencies.
 
 Installation
 ------------
 
-You can install "pytest-prob" via `pip`_ from `PyPI`_::
+You can install "pytest-prob" via `pip`_ from `github`_::
 
-    $ pip install pytest-prob
+    $ pip install git+git@github.com:bivab/pytest-prob.git
 
+Or from source by running::
+
+    $ python setup.py install
 
 Usage
 -----
 
 * TODO
 
-Contributing
-------------
-Contributions are very welcome. Tests can be run with `tox`_, please ensure
-the coverage at least stays the same before you submit a pull request.
-
 License
 -------
 
-Distributed under the terms of the `MIT`_ license, "pytest-prob" is free and open source software
+Distributed under the terms of the `ISC`_ license.
 
 
 Issues
@@ -53,14 +53,12 @@ Issues
 
 If you encounter any problems, please `file an issue`_ along with a detailed description.
 
-.. _`Cookiecutter`: https://github.com/audreyr/cookiecutter
-.. _`@hackebrot`: https://github.com/hackebrot
-.. _`MIT`: http://opensource.org/licenses/MIT
-.. _`BSD-3`: http://opensource.org/licenses/BSD-3-Clause
-.. _`GNU GPL v3.0`: http://www.gnu.org/licenses/gpl-3.0.txt
-.. _`cookiecutter-pytest-plugin`: https://github.com/pytest-dev/cookiecutter-pytest-plugin
-.. _`file an issue`: https://github.com/bivab/pytest-prob/issues
+.. _`ProB`: http://www3.hhu.de/stups/prob/
 .. _`pytest`: https://github.com/pytest-dev/pytest
 .. _`tox`: https://tox.readthedocs.org/en/latest/
 .. _`pip`: https://pypi.python.org/pypi/pip/
-.. _`PyPI`: https://pypi.python.org/pypi
+.. _`file an issue`: https://github.com/bivab/pytest-prob/issues
+.. _`ISC`: LICENSE
+.. _`requirements.txt`: requirements.txt
+.. _`requirements/dev.txt`: requirements/dev.txt
+.. _`github`: https://github.com/bivab/pytest-prob
