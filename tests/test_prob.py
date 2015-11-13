@@ -172,3 +172,31 @@ def test_multiline_predicate(testdir):
     result.stdout.fnmatch_lines([
         '*::test_multiline PASSED',
     ])
+
+@prob_plugin_test
+def test_warnings_empty_test(testdir):
+    # Timeout of 0 forces test to fail
+    testdir.makefile('.yml', test_empty_test="""
+            """)
+    result = testdir.runpytest('-rw -v')
+
+    result.stdout.fnmatch_lines([
+        'WPROB test_empty_test.yml test_empty_test is empty',
+    ])
+
+@prob_plugin_test
+def test_warning_no_machine(testdir):
+    # Timeout of 0 forces test to fail
+    testdir.makefile('.yml', test_missing_machine="""
+        test_truth:
+            test: "1=1"
+            """)
+    result = testdir.runpytest('-rw')
+    result2 = testdir.runpytest('-v')
+
+    result.stdout.fnmatch_lines([
+        'WPROB test_missing_machine.yml Machine not provided in test'
+    ])
+    result2.stdout.fnmatch_lines([
+        '*::test_truth PASSED',
+    ])

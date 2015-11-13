@@ -17,6 +17,7 @@ def pytest_collectstart(collector):
     else:
         pytest.fail("probcli not found in PATH")
 
+
 def pytest_ignore_collect(path, config):
     return path.ext != ".yml"
 
@@ -34,10 +35,13 @@ class BTestFile(pytest.File):
         self.name = self.fspath.purebasename
         self.raw = yaml.safe_load(self.fspath.open())
 
+    def _warn(self, msg):
+        args = dict(code="PROB", message=msg,
+                nodeid=self.nodeid, fslocation=self.nodeid)
+        self.ihook.pytest_logwarning.call_historic(kwargs=args)
     def collect(self):
         if not self.raw:
-            from warnings import warn
-            warn(self.name + ' is empty')
+            self._warn(self.name + ' is empty')
             return
 
         for k,v in self.raw.items():
@@ -49,8 +53,7 @@ class BTestFile(pytest.File):
 
     def setup(self):
         if 'machine' not in self.raw:
-            # XXX print a warning
-            print("machine not provided in test")
+            self._warn("Machine not provided in test")
         self.machine = self.raw.get('machine', '')
         self.flags = self.raw.get('flags', '')
 
