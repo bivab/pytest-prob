@@ -5,8 +5,8 @@ import yaml
 import pexpect
 from subprocess import call
 from io import BytesIO
-import re
 import os
+
 
 def pytest_collectstart(collector):
     for path in os.environ["PATH"].split(os.pathsep):
@@ -37,14 +37,15 @@ class BTestFile(pytest.File):
 
     def _warn(self, msg):
         args = dict(code="PROB", message=msg,
-                nodeid=self.nodeid, fslocation=self.nodeid)
+                    nodeid=self.nodeid, fslocation=self.nodeid)
         self.ihook.pytest_logwarning.call_historic(kwargs=args)
+
     def collect(self):
         if not self.raw:
             self._warn(self.name + ' is empty')
             return
 
-        for k,v in self.raw.items():
+        for k, v in self.raw.items():
             if not k.startswith('test_'):
                 continue
             assert 'flags' not in v
@@ -57,16 +58,16 @@ class BTestFile(pytest.File):
         self.machine = self.raw.get('machine', '')
         self.flags = self.raw.get('flags', '')
 
-        if 'setup'  in self.raw:
+        if 'setup' in self.raw:
             setup = self.raw['setup']
             env = os.environ.copy()
             if isinstance(setup, dict):
-                cmd=setup['cmd'].split()
+                cmd = setup['cmd'].split()
                 if 'env' in setup:
-                    for k,v in (i.split('=') for i in setup['env'].split()):
+                    for k, v in (i.split('=') for i in setup['env'].split()):
                         env[k] = v
             else:
-                cmd=self.raw['setup'].split()
+                cmd = self.raw['setup'].split()
             call(cmd, env=env)
 
         self.process = pexpect.spawn('probcli -repl ' + self.flags + ' ' + self.machine)
@@ -75,7 +76,7 @@ class BTestFile(pytest.File):
     def teardown(self):
         if 'teardown' not in self.raw:
             return
-        cmd=self.raw['teardown'].split()
+        cmd = self.raw['teardown'].split()
         return call(cmd)
 
 
@@ -99,8 +100,11 @@ class BItem(pytest.Item):
             raise pytest.skip(self.name)
 
     def runtest(self):
-        # 
-        pattern = ['false/0,false_after_expansion/0,unknown/0,unknown_after_expansion/0', 'Predicate.*is TRUE', 'Expression Value =.*\nTRUE', 'Predicate is FALSE', 'Expression Value =\nFALSE', pexpect.TIMEOUT, pexpect.EOF]
+        #
+        pattern = ['false/0,false_after_expansion/0,unknown/0,unknown_after_expansion/0',
+                   'Predicate.*is TRUE', 'Expression Value =.*\nTRUE',
+                   'Predicate is FALSE', 'Expression Value =\nFALSE',
+                   pexpect.TIMEOUT, pexpect.EOF]
         self._skip(self.extra.get('skip', False))
         #
         cli = self.parent.process
@@ -113,26 +117,21 @@ class BItem(pytest.Item):
         timeout = self.extra.get('timeout', 5)
         result = cli.expect(pattern, timeout=timeout)
         #
-        if result > 2: # index in the pattern list above.
-                       # result < 2 indicates successful execution
+        # index in the pattern list above. result < 2 indicates successful
+        # execution
+        if result > 2:
             raise BTestException(self, log.getvalue())
 
     def __repr__(self):
         return "{name}: flags:{flags}|tests:{test}".format(**self.__dict__)
 
     def repr_failure(self, excinfo):
-        return repr(self)+'\n'+excinfo.value.message
-
-    def repr_failure(self, excinfo):
         if isinstance(excinfo.value, BTestException):
             errormsg = excinfo.value.result.decode()
             errormsg = errormsg.splitlines()
+            failuremsg = "Failed: {}".format(excinfo.value.item.name)
+            return "\n".join(["Test execution failed", failuremsg] + errormsg)
 
-            return "\n".join(
-                    ["Test execution failed",
-                     "Failed: {}".format(excinfo.value.item.name)
-                    ]
-                    + errormsg)
         return super(BItem, self).repr_failure(excinfo)
 
     def reportinfo(self):
