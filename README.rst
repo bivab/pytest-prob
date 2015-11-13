@@ -1,20 +1,66 @@
 pytest-prob
-===================================
+===========
 
 .. image:: https://travis-ci.org/bivab/pytest-prob.svg?branch=master
     :target: https://travis-ci.org/bivab/pytest-prob
     :alt: See Build Status on Travis CI
 
-Pytest plugin to run B predicates and expressions as tests on `ProB`_.
+Pytest plug-in to run B predicates and expressions as tests on `ProB`_.
 
 ----
 
+About
+-----
 
-Features
---------
+Evaluate B predicates and expressions as unit tests using pytest. Tests are
+defined in YAML files and can be executed in the context of a B machine or
+independently.
 
-* TODO
+An example test file might look like this: ::
 
+  machine: TestMachine.mch
+  setup: cp tmp/data.mch data.mch
+  teardown: rm data.mch
+
+  test_one:
+    test: "1 > 0"
+
+On the top level the following keys are supported. All keys are optional.
+
+- *machine:* B machine to be loaded as context for the tests.
+- *flags:* command line flags passed to the ProB cli.
+- *setup:* shell command to run before starting the tests.
+- *teardown:* shell command run after executing the tests.
+
+Declaring tests
+~~~~~~~~~~~~~~~
+
+Test are defined using keys that start with ``test\_``.  The test body is defined using a ``test`` sub-key.
+
+- *test:* code to be evaluated for each test.
+- *skip:* if present the test is skipped, the value is used as the reason for skipping the test.
+- *timeout:* the number of seconds after which the test is considered as failed in case it has not terminated by then. 
+
+Example
+~~~~~~~
+
+::
+
+  machine: TestMachine.mch
+  flags: -p CLPFD TRUE
+  setup: cp tmp/data.mch data.mch
+  teardown: rm data.mch
+
+  test_one:
+    test: "1 > 0"
+
+  test_long:
+    timeout: 50
+    test: "long_running_computation()"
+
+  test_condition:
+    skip: Updated changed API
+    test: "calling_something[{1}]"
 
 Testing
 -------
@@ -36,11 +82,6 @@ You can install "pytest-prob" via `pip`_ from `github`_::
 Or from source by running::
 
     $ python setup.py install
-
-Usage
------
-
-* TODO
 
 License
 -------
