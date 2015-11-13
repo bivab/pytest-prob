@@ -13,7 +13,7 @@ def read(fname):
 
 setup(
     name='pytest-prob',
-    version='0.1.0-dev',
+    version='0.1.0',
     author='David Schneider',
     author_email='david.schneider@bivab.de',
     maintainer='David Schneider',
