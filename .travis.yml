@@ -2,7 +2,7 @@ language: python
 python:
   - "3.5"
 before_script:
-  - wget https://bitbucket.org/pypy/pypy/downloads/pypy-4.0.0-linux64.tar.bz2 -O /tmp/pypy.tar.bz2
+  - wget http://buildbot.pypy.org/nightly/trunk/pypy-c-jit-latest-linux64.tar.bz2 -O /tmp/pypy.tar.bz2
   - mkdir /tmp/pypy
   - tar -xvf /tmp/pypy.tar.bz2 -C /tmp/pypy --strip-components 1
   - bin/prepare_testing.sh
