@@ -4,3 +4,7 @@ __pycache__/*
 *.egg-info
 *.prob
 .cache
+prob/*
+dist
+build
+download.tar.gz
