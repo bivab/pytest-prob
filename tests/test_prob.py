@@ -156,3 +156,19 @@ def test_timeout(testdir):
     result.stdout.fnmatch_lines([
         '*::test_timeout FAILED',
     ])
+
+@prob_plugin_test
+def test_multiline_predicate(testdir):
+    # Timeout of 0 forces test to fail
+    testdir.makefile('.yml', test_machine="""
+        test_multiline:
+            test: >
+                    1 > 2
+                    or
+                    1 = 1
+            """)
+    result = testdir.runpytest('-v')
+
+    result.stdout.fnmatch_lines([
+        '*::test_multiline PASSED',
+    ])

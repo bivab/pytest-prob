@@ -99,7 +99,10 @@ class BItem(pytest.Item):
     def __init__(self, name, test, extra=None, parent=None, config=None, session=None):
         assert name.startswith('test_')
         super(BItem, self).__init__(name, parent, config, session)
+
+        test = test.replace('\n', ' ')
         self.test = test
+        #
         if extra is None:
             extra = {}
         self.extra = extra
