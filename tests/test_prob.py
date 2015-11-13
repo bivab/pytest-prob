@@ -130,7 +130,7 @@ def test_skip(testdir):
     testdir.makefile('.yml', test_machine="""
         test_skip:
             skip: lorem ipsum
-            test: FALSE
+            test: "FALSE"
             """)
     result = testdir.runpytest('-v')
     result2 = testdir.runpytest('-rs')
