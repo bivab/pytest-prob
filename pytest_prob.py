@@ -8,24 +8,6 @@ from io import BytesIO
 import re
 import os
 
-
-def pytest_addoption(parser):
-    group = parser.getgroup('prob')
-    group.addoption(
-        '--foo',
-        action='store',
-        dest='dest_foo',
-        default=2015,
-        help='Set the value for the fixture "bar".'
-    )
-
-    parser.addini('HELLO', 'Dummy pytest.ini setting')
-
-
-@pytest.fixture
-def bar(request):
-    return request.config.option.dest_foo
-
 def pytest_collectstart(collector):
     for path in os.environ["PATH"].split(os.pathsep):
         path = path.strip('"')
