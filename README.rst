@@ -67,7 +67,9 @@ Example
 Testing
 -------
 
-Tests can be run with `tox`_.
+Tests can be run with `tox`_. The tests expect to find a probcli binary in your
+``$PATH`` variable. use ``bin/prepare_testing.sh`` to download and unpack ProB
+for you platform.
 
 Requirements
 ------------
