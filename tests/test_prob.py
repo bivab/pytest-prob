@@ -142,3 +142,17 @@ def test_skip(testdir):
     result2.stdout.fnmatch_lines([
         '*test_skip: lorem ipsum',
     ])
+
+@prob_plugin_test
+def test_timeout(testdir):
+    # Timeout of 0 forces test to fail
+    testdir.makefile('.yml', test_machine="""
+        test_timeout:
+            timeout: 0
+            test: "TRUE"
+            """)
+    result = testdir.runpytest('-v')
+
+    result.stdout.fnmatch_lines([
+        '*::test_timeout FAILED',
+    ])
