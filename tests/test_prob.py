@@ -3,6 +3,7 @@ import os
 
 TEST_MACHINE = os.path.join(os.path.dirname(__file__), 'TestMachine.mch')
 
+
 def prob_plugin_test(f):
     def test_func(testdir):
         testdir.makeconftest('pytest_plugins = "prob"')
@@ -75,7 +76,7 @@ def test_setup(testdir):
         test_foo:
             test: "TRUE"
     """.format(path))
-    result = testdir.runpytest()
+    testdir.runpytest()
     assert path.exists()
 
 
@@ -125,6 +126,7 @@ def test_flags(testdir):
         '*::test_constant PASSED',
     ])
 
+
 @prob_plugin_test
 def test_skip(testdir):
     testdir.makefile('.yml', test_machine="""
@@ -143,6 +145,7 @@ def test_skip(testdir):
         '*test_skip: lorem ipsum',
     ])
 
+
 @prob_plugin_test
 def test_timeout(testdir):
     # Timeout of 0 forces test to fail
@@ -156,6 +159,7 @@ def test_timeout(testdir):
     result.stdout.fnmatch_lines([
         '*::test_timeout FAILED',
     ])
+
 
 @prob_plugin_test
 def test_multiline_predicate(testdir):
@@ -173,6 +177,7 @@ def test_multiline_predicate(testdir):
         '*::test_multiline PASSED',
     ])
 
+
 @prob_plugin_test
 def test_warnings_empty_test(testdir):
     # Timeout of 0 forces test to fail
@@ -183,6 +188,7 @@ def test_warnings_empty_test(testdir):
     result.stdout.fnmatch_lines([
         'WPROB test_empty_test.yml test_empty_test is empty',
     ])
+
 
 @prob_plugin_test
 def test_warning_no_machine(testdir):

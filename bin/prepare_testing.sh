@@ -27,7 +27,7 @@ Linux)
     ;;
 esac
 
-curl ${url} -z download.tar.gz > download.tar.gz
+echo "curl ${url} -z download.tar.gz -o download.tar.gz"
+curl ${url} -z download.tar.gz -o download.tar.gz
 mkdir prob
 tar -xvf download.tar.gz -C prob --strip-components 1
-rm -rf prob
