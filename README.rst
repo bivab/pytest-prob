@@ -81,7 +81,7 @@ Installation
 
 You can install "pytest-prob" via `pip`_ from `github`_::
 
-    $ pip install git+git@github.com:bivab/pytest-prob.git
+    $ pip install git+https://github.com/bivab/pytest-prob.git
 
 Or from source by running::
 
