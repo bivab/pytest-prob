@@ -117,10 +117,10 @@ class BItem(pytest.Item):
         timeout = self.extra.get('timeout', 5)
         result = cli.expect(pattern, timeout=timeout)
         #
-        # index in the pattern list above. result < 2 indicates successful
+        # index in the pattern list above. result < 3 indicates successful
         # execution
         if result > 2:
-            raise BTestException(self, log.getvalue())
+            raise BTestException(self, log.getvalue()[-1000:])
 
     def __repr__(self):
         return "{name}: flags:{flags}|tests:{test}".format(**self.__dict__)

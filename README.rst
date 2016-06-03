@@ -7,7 +7,7 @@ pytest-prob
 
 Pytest plug-in to run B predicates and expressions as tests on `ProB`_.
 
-*Current Version*: 0.1.0
+*Current Version*: 0.2.0
 
 ----
 
@@ -67,7 +67,9 @@ Example
 Testing
 -------
 
-Tests can be run with `tox`_.
+Tests can be run with `tox`_. The tests expect to find a probcli binary in your
+``$PATH`` variable. use ``bin/prepare_testing.sh`` to download and unpack ProB
+for you platform.
 
 Requirements
 ------------
@@ -79,7 +81,7 @@ Installation
 
 You can install "pytest-prob" via `pip`_ from `github`_::
 
-    $ pip install git+git@github.com:bivab/pytest-prob.git
+    $ pip install git+https://github.com/bivab/pytest-prob.git
 
 Or from source by running::
 
