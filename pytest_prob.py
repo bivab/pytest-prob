@@ -102,8 +102,8 @@ class BItem(pytest.Item):
     def runtest(self):
         #
         pattern = ['false/0,false_after_expansion/0,unknown/0,unknown_after_expansion/0',
-                   'Predicate.*is TRUE', 'Expression Value =.*\nTRUE',
-                   'Predicate is FALSE', 'Expression Value =\nFALSE',
+                   'Predicate.+is.+TRUE', 'Expression Value =.*\nTRUE',
+                   'Predicate.+is.+FALSE', 'Expression Value =.*\nFALSE',
                    pexpect.TIMEOUT, pexpect.EOF]
         self._skip(self.extra.get('skip', False))
         #
