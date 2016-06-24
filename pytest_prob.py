@@ -57,6 +57,7 @@ class BTestFile(pytest.File):
             self._warn("Machine not provided in test")
         self.machine = self.raw.get('machine', '')
         self.flags = self.raw.get('flags', '')
+        self.timeout = self.raw.get('load_timeout', 30)
 
         if 'setup' in self.raw:
             setup = self.raw['setup']
@@ -71,7 +72,7 @@ class BTestFile(pytest.File):
             call(cmd, env=env)
 
         self.process = pexpect.spawn('probcli -repl ' + self.flags + ' ' + self.machine)
-        self.process.expect('>>>')
+        self.process.expect('>>>', timeout=self.timeout)
 
     def teardown(self):
         if 'teardown' not in self.raw:
