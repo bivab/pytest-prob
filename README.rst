@@ -7,7 +7,7 @@ pytest-prob
 
 Pytest plug-in to run B predicates and expressions as tests on `ProB`_.
 
-*Current Version*: 0.3.0
+*Current Version*: 0.4.0-dev
 
 ----
 
