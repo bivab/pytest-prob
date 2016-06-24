@@ -7,7 +7,7 @@ pytest-prob
 
 pytest plug-in to run B predicates and expressions as tests on `ProB`_.
 
-*Current Version*: 0.2.1
+*Current Version*: 0.3.0
 
 ----
 
@@ -30,6 +30,7 @@ An example test file might look like this: ::
 On the top level the following keys are supported. All keys are optional.
 
 - *machine:* B machine to be loaded as context for the tests.
+- *load_timeout*: The number of seconds after which loading the B machine for the test is considered as failed.
 - *flags:* command line flags passed to the ProB cli.
 - *setup:* shell command to run before starting the tests.
 - *teardown:* shell command run after executing the tests.
@@ -50,6 +51,7 @@ Example
 
   machine: TestMachine.mch
   flags: -p CLPFD TRUE
+  load_timeout: 20
   setup: cp tmp/data.mch data.mch
   teardown: rm data.mch
 

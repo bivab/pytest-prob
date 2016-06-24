@@ -5,7 +5,7 @@ case $os in
 
 Darwin)
     echo "Running on OS X"
-    url="http://nightly.cobra.cs.uni-duesseldorf.de/tcl/ProB.mac_os.10.7.5.x86_64.tar.gz"
+    url="https://www3.hhu.de/stups/downloads/prob/tcltk/nightly/ProB.mac_os.10.11.4.x86_64.tar.gz"
     ;;
 
 Linux)
@@ -14,10 +14,10 @@ Linux)
     if [ $wordsize = "x86_64" ]
     then
       echo "64 bit"
-      url="http://nightly.cobra.cs.uni-duesseldorf.de/tcl/ProB.linux64.tar.gz"
+      url="https://www3.hhu.de/stups/downloads/prob/tcltk/nightly/ProB.linux64.tar.gz"
     else
       echo "32 bit"
-      url="http://nightly.cobra.cs.uni-duesseldorf.de/tcl/ProB.linux32.tar.gz"
+      url="https://www3.hhu.de/stups/downloads/prob/tcltk/nightly/ProB.linux32.tar.gz"
     fi
     ;;
 
