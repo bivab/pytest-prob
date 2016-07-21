@@ -79,6 +79,7 @@ def test_setup(testdir):
     testdir.runpytest()
     assert path.exists()
 
+
 @prob_plugin_test
 def test_setup_list_of_ops(testdir):
     path = testdir.tmpdir.join('setup.txt')
@@ -112,12 +113,13 @@ def test_teardown(testdir):
     ])
     assert not path.exists()
 
+
 @prob_plugin_test
 def test_teardown_list_of_ops(testdir):
     path = testdir.tmpdir.join('TestMachine.mch')
     path2 = testdir.tmpdir.join('TestMachine2.mch')
     testdir.makefile('.yml', test_teardown="""
-        setup: 
+        setup:
           - "cp  {source} {target}"
           - "cp  {source} {target2}"
         teardown:
