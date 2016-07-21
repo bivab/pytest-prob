@@ -61,15 +61,18 @@ class BTestFile(pytest.File):
 
         if 'setup' in self.raw:
             setup = self.raw['setup']
-            env = os.environ.copy()
-            if isinstance(setup, dict):
-                cmd = setup['cmd'].split()
-                if 'env' in setup:
-                    for k, v in (i.split('=') for i in setup['env'].split()):
-                        env[k] = v
-            else:
-                cmd = self.raw['setup'].split()
-            call(cmd, env=env)
+            if not isinstance(setup, list):
+                setup = [setup]
+            for s in setup:
+                env = os.environ.copy()
+                if isinstance(s, dict):
+                    cmd = s['cmd'].split()
+                    if 'env' in s:
+                        for k, v in (i.split('=') for i in s['env'].split()):
+                            env[k] = v
+                else:
+                    cmd = s.split()
+                call(cmd, env=env)
 
         self.process = pexpect.spawn('probcli -repl ' + self.flags + ' ' + self.machine)
         self.process.expect('>>>', timeout=self.timeout)
@@ -77,8 +80,12 @@ class BTestFile(pytest.File):
     def teardown(self):
         if 'teardown' not in self.raw:
             return
-        cmd = self.raw['teardown'].split()
-        return call(cmd)
+        teardown = self.raw['teardown']
+        if not isinstance(teardown, list):
+            teardown = [teardown]
+        for s in teardown:
+            cmd = s.split()
+            call(cmd)
 
 
 class BItem(pytest.Item):

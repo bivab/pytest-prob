@@ -79,6 +79,21 @@ def test_setup(testdir):
     testdir.runpytest()
     assert path.exists()
 
+@prob_plugin_test
+def test_setup_list_of_ops(testdir):
+    path = testdir.tmpdir.join('setup.txt')
+    path2 = testdir.tmpdir.join('test.txt')
+    testdir.makefile('.yml', test_setup="""
+        setup:
+          - "touch {}"
+          - "touch {}"
+        test_foo:
+            test: "TRUE"
+    """.format(path, path2))
+    testdir.runpytest()
+    assert path.exists()
+    assert path2.exists()
+
 
 @prob_plugin_test
 def test_teardown(testdir):
@@ -96,6 +111,29 @@ def test_teardown(testdir):
         '*::test_subset PASSED',
     ])
     assert not path.exists()
+
+@prob_plugin_test
+def test_teardown_list_of_ops(testdir):
+    path = testdir.tmpdir.join('TestMachine.mch')
+    path2 = testdir.tmpdir.join('TestMachine2.mch')
+    testdir.makefile('.yml', test_teardown="""
+        setup: 
+          - "cp  {source} {target}"
+          - "cp  {source} {target2}"
+        teardown:
+            - "rm {target}"
+            - "rm {target2}"
+        machine: {target}
+        test_subset:
+            test: "{{aa, bb}} <: TEST_SET"
+    """.format(source=TEST_MACHINE, target=path, target2=path2))
+    result = testdir.runpytest('-v')
+
+    result.stdout.fnmatch_lines([
+        '*::test_subset PASSED',
+    ])
+    assert not path.exists()
+    assert not path2.exists()
 
 
 @prob_plugin_test
