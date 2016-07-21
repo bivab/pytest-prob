@@ -19,8 +19,7 @@ install:
   - pip install --upgrade pip setuptools tox virtualenv
 matrix:
   allow_failures:
-    - env: TOX_ENV=pep8
-    - env: TOX_ENV=flake8
+    - env: TOX_ENV=pypy
 script:
   - tox -e $TOX_ENV
 after_failure:
