@@ -5,9 +5,9 @@ pytest-prob
     :target: https://travis-ci.org/bivab/pytest-prob
     :alt: See Build Status on Travis CI
 
-Pytest plug-in to run B predicates and expressions as tests on `ProB`_.
+pytest plug-in to run B predicates and expressions as tests on `ProB`_.
 
-*Current Version*: 0.4.0-dev
+*Current Version*: 0.4.0
 
 ----
 
@@ -32,8 +32,8 @@ On the top level the following keys are supported. All keys are optional.
 - *machine:* B machine to be loaded as context for the tests.
 - *load_timeout*: The number of seconds after which loading the B machine for the test is considered as failed.
 - *flags:* command line flags passed to the ProB cli.
-- *setup:* shell command to run before starting the tests.
-- *teardown:* shell command run after executing the tests.
+- *setup:* shell command or list of commands to run before starting the tests.
+- *teardown:* shell command or list of commands run after executing the tests.
 
 Declaring tests
 ~~~~~~~~~~~~~~~
